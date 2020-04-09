@@ -136,9 +136,10 @@ def getUserLoginHistory(inputPath):
 
 def start(inputPath):
 
-	# getTmpData(inputPath)				# cần sửa phần lấy file event của win
+	getTmpData(inputPath)				# cần sửa phần lấy file event của win
+
 	getUserAndSID(inputPath)
-	# getBrowserCache(inputPath)
+
+	getBrowserCache(inputPath)
 	getUserLoginHistory(inputPath)
 	
-start("/mnt/hgfs/F")

@@ -28,4 +28,4 @@ def startCheck(path):
 	elif "root" in pathLs or "mnt" in pathLs:
 		print "linux dang hoan thien"
 
-startCheck("/mnt/hgfs/F")
+startCheck("/media/uss/944A90314A90125A")
