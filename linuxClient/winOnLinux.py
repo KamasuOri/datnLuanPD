@@ -7,19 +7,10 @@ import api
 
 userAndSID=['']
 userList=['']
+outputDir=''
+inputPath=''
 
-def getTmpData(inputPath):
-	# get reg file and some thing we want to use
-	try:
-		api.copyFile(inputPath+"/Windows/System32/config","tmpFolder/reg")
-		api.copyFile(inputPath+"/Windows/System32/winevt/Logs","tmpFolder/winLog")
-
-		api.retCmd("rip.pl -r tmpFolder/reg/config/SAM -p samparse > tmpFolder/reg/config/SAMparse")
-	except:
-		print "loi getTmpData"
-	return 0
-
-def getUserAndSID(inputPath):
+def getUserAndSID():
 	check =0
 	try:
 		a = open("tmpFolder/reg/config/SAMparse","r").read()
@@ -48,28 +39,52 @@ def getUserAndSID(inputPath):
 		print "loi getSysReg"
 	return 0
 
-def getBrowserCache(inputPath):
+def getTmpData():
+	print "---"+inputPath
+	print outputDir
+	# get reg file and some thing we want to use
+	try:
+		api.copyFile(inputPath+"Windows/System32/config","tmpFolder/reg")
+		api.copyFile(inputPath+"Windows/System32/winevt/Logs","tmpFolder/winLog")
+
+		api.retCmd("rip.pl -r tmpFolder/reg/config/SAM -p samparse > tmpFolder/reg/config/SAMparse")
+	except:
+		print "loi getTmpData phase 1"
+
+	# try:
+	# 	getUserAndSID()
+
+	# 	for userName in userList:
+	# 		cacheStore = "tmpFolder/reg/"+userName
+	# 		api.retCmd("mkdir -p "+cacheStore)
+
+
+	# except:
+	# 	print "loi getTmpData phase 2"
+	return 0
+
+def getBrowserCache():
 	#C:\Users\Cesar\AppData\Local\Opera Software\Opera Stable
 	for userName in userList:
 		cacheStore = "tmpFolder/browserCache/"+userName
 		api.retCmd("mkdir -p "+cacheStore)
 
 		# -------------------------------------------- test chay binh thuong --------------------------------------------
-		chromeCache = inputPath+"/Users/"+userName+"/AppData/Local/Google/Chrome/User Data/Default/Cache"
+		chromeCache = inputPath+"Users/"+userName+"/AppData/Local/Google/Chrome/User Data/Default/Cache"
 		if os.path.exists(chromeCache):
 			api.copyFile(chromeCache,cacheStore+"/chrome")
 
-		coccocCache = inputPath+"/Users/"+userName+"/AppData/Local/CocCoc/Browser/User Data/Default/Cache"
+		coccocCache = inputPath+"Users/"+userName+"/AppData/Local/CocCoc/Browser/User Data/Default/Cache"
 		if os.path.exists(coccocCache):
 			api.copyFile(coccocCache,cacheStore+"/coccoc")
 
-		ieCache = inputPath+"/Users/"+userName+"/AppData/Local/Microsoft/Windows/INetCache/IE"
+		ieCache = inputPath+"Users/"+userName+"/AppData/Local/Microsoft/Windows/INetCache/IE"
 		if os.path.exists(ieCache):
 			api.copyFile(ieCache,cacheStore+"/IE1")
-		ieCache = inputPath+"/Users/"+userName+"/AppData/Local/Microsoft/Windows/Caches"
+		ieCache = inputPath+"Users/"+userName+"/AppData/Local/Microsoft/Windows/Caches"
 		if os.path.exists(ieCache):
 			api.copyFile(ieCache,cacheStore+"/IE2")
-		ieCache = inputPath+"/Users/"+userName+"/AppData/Local/Microsoft/Windows/Profiles/INetCache/IE"
+		ieCache = inputPath+"Users/"+userName+"/AppData/Local/Microsoft/Windows/Profiles/INetCache/IE"
 		if os.path.exists(ieCache):
 			api.copyFile(ieCache,cacheStore+"/IE3")
 		# ---------------------------------------------------------------------------------------
@@ -77,16 +92,16 @@ def getBrowserCache(inputPath):
 
 		# --------------------------------------------chua test--------------------------------------------
 
-		# operaCache = inputPath+"/Users/"+userName+"AppData/Local/Opera Software/Opera Stable"
+		# operaCache = inputPath+"Users/"+userName+"AppData/Local/Opera Software/Opera Stable"
 		# if os.path.exists(operaCache):
 		# 	api.copyFile(operaCache,cacheStore+"/opera")
 	
-		# firefoxCache = inputPath+"/Users/"+userName+"/AppData/Local/Mozilla/Firefox/Profiles"
+		# firefoxCache = inputPath+"Users/"+userName+"/AppData/Local/Mozilla/Firefox/Profiles"
 		# if os.path.exists(firefoxCache):
 		# 	api.copyFile(firefoxCache,cacheStore+"/firefox")
 		# ---------------------------------------------------------------------------------------
 		
-def getUserLoginHistory(inputPath):
+def getUserLoginHistory():
 	api.retCmd("rm tmpFolder/winLog/MicrosoftWindowsUserProfileService")
 	api.retCmd("rm tmpFolder/winLog/retUserLoginHistory")
 	listLog = api.retCmd("ls tmpFolder/winLog/Logs").split("\n")
@@ -134,12 +149,19 @@ def getUserLoginHistory(inputPath):
 
 	return 0
 
-def start(inputPath):
+def start(inPath,retDir):
+	global inputPath
+	global outputDir
+	outputDir = retDir
+	inputPath = inPath
+	if inputPath[-1] != "/":
+		inputPath=inputPath+"/"
+	if outputDir[-1] != "/":
+		outputDir=outputDir+"/"
 
-	getTmpData(inputPath)				# cần sửa phần lấy file event của win
+	getTmpData()
 
-	getUserAndSID(inputPath)
-
-	getBrowserCache(inputPath)
-	getUserLoginHistory(inputPath)
+	# getBrowserCache(inputPath)
+	# getUserLoginHistory(inputPath)
 	
+start("/home/uss/Desktop/F","./")

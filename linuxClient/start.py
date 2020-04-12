@@ -17,7 +17,7 @@ def preEnv():
 	api.retCmd("mkdir -p tmpFolder/other")
 	return 0
 
-def startCheck(path):
+def startCheck(path,outputDir):
 	if preEnv():
 		exit(0)
 	pathLs=api.retCmd("ls "+path)
@@ -28,4 +28,4 @@ def startCheck(path):
 	elif "root" in pathLs or "mnt" in pathLs:
 		print "linux dang hoan thien"
 
-startCheck("/media/uss/944A90314A90125A")
+startCheck("/home/uss/Desktop/F","./")

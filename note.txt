@@ -5,7 +5,7 @@ https://docs.google.com/spreadsheets/d/1GaoFrB6fXUKt9iqdckqfnNGb670VbEF2012uRyFW
 link registri
 C:\Windows\System32\config
 %UserProfile%\Ntuser.dat
-
+file mru https://www.andreafortuna.org/2017/10/18/windows-registry-in-forensic-analysis/
 
 =-====================================
 rdp log https://ponderthebits.com/2018/02/windows-rdp-related-event-logs-identification-tracking-and-investigation/

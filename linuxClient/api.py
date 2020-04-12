@@ -13,15 +13,17 @@ def checkPath(path):
 		return path
 
 def copyFile(dest,src):
+	print dest
 	if  os.path.isfile(dest):
-
-		retCmd("cp "+checkPath(dest)+" "+checkPath(src))
+		cmd = "cp "+checkPath(dest)+" "+checkPath(src)
+		retCmd(cmd)
 	elif os.path.isdir(dest):
 		if  os.path.isfile(dest):
 			return 1
-
-		retCmd("cp -r "+checkPath(dest)+" "+checkPath(src))
+		cmd = "cp -r "+checkPath(dest)+" "+checkPath(src)
+		retCmd(cmd)
 	else:
+		print "Cant check file:"+dest
 		return 1
 	return 0
 
