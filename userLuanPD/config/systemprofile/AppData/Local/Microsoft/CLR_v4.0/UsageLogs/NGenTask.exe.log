@@ -1,0 +1,5 @@
+1,"fusion","GAC",0
+1,"WinRT","NotApp",1
+3,"System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","C:\Windows\assembly\NativeImages_v4.0.30319_64\System\08f69c55e9284eaab92075159503c897\System.ni.dll",0
+3,"System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089","C:\Windows\assembly\NativeImages_v4.0.30319_64\System.Core\c9243edb149eb78c5309c103df69d594\System.Core.ni.dll",0
+3,"System.Management, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a","C:\Windows\assembly\NativeImages_v4.0.30319_64\System.Management\e40e5dfbda2461704b289f4dd7c99033\System.Management.ni.dll",0

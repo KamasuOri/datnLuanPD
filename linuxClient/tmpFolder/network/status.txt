@@ -1,0 +1,51 @@
+ens33     Link encap:Ethernet  HWaddr 00:0c:29:b0:b2:34  
+          inet addr:192.168.99.121  Bcast:192.168.99.255  Mask:255.255.255.0
+          inet6 addr: fe80::949d:c9c2:d590:c30/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:824 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:179 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:79621 (79.6 KB)  TX bytes:18031 (18.0 KB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:192 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:192 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:13761 (13.7 KB)  TX bytes:13761 (13.7 KB)
+
++++++
+Adapter: {53F45BFD-6097-4890-BCA1-CFF88760CE29}
+LastWrite Time: Thu Jan  1 00:00:00 1970 Z
+  EnableDHCP           1                   
++++++
+Adapter: {EF875D20-BA8D-43BB-B422-70F2EDF4E7D2}
+LastWrite Time: Thu Jan  1 00:00:00 1970 Z
+  EnableDHCP           1                   
+----------------------------------------
++++++
+Adapter: {53f45bfd-6097-4890-bca1-cff88760ce29}
+LastWrite Time: Thu Jan  1 00:00:00 1970 Z
+  EnableDHCP                   1                   
+  RegistrationEnabled          1                   
++++++
+  RegisterAdapterName          0                   
++++++
+Adapter: {670f8093-7709-11ea-a9ae-806e6f6e6963}
+LastWrite Time: Thu Jan  1 00:00:00 1970 Z
++++++
+Adapter: {ef875d20-ba8d-43bb-b422-70f2edf4e7d2}
+LastWrite Time: Thu Jan  1 00:00:00 1970 Z
+  EnableDHCP                   1                   
+  DhcpSubnetMask               255.255.255.0       
+  DhcpServer                   192.168.99.1        
+  LeaseObtainedTime            Tue Apr 14 08:48:21 2020 Z
+  T1                           Tue Apr 14 20:48:21 2020 Z
+  T2                           Wed Apr 15 05:48:21 2020 Z
+  DhcpSubnetMaskOpt            255.255.255.0       
+  RegistrationEnabled          1                   
++++++
+  RegisterAdapterName          0                   
+----------------------------------------

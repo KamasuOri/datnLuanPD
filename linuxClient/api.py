@@ -13,7 +13,7 @@ def checkPath(path):
 		return path
 
 def copyFile(dest,src):
-	print dest
+	# print dest
 	if  os.path.isfile(dest):
 		cmd = "cp "+checkPath(dest)+" "+checkPath(src)
 		retCmd(cmd)

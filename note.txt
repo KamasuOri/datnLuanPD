@@ -12,7 +12,7 @@ rdp log https://ponderthebits.com/2018/02/windows-rdp-related-event-logs-identif
 
 lấy registry
 C:\Windows\System32\config
-%UserProfile%\Ntuser.dat
+%UserProfile%\NTuser.dat
 
 https://blog.dfir.fi/tools/2020/02/19/install-regripper.html
 install tool read windows log evtx
@@ -23,9 +23,14 @@ phân tích reg
 ++ username + sid ở trong filr sam
 	rip.pl -r SAM  -p samparse
 
+------------------------
+disk image 
 
-
+https://github.com/yirkha/ntfsclone2vhd
+ntfsclone --save-image -o - /dev/sdXX | ntfsclone2vhd - /mnt/usb/output.vhd
 
 ===========================================
 tool request
 + regripper
+https://github.com/yirkha/ntfsclone2vhd
+ntfsclone 

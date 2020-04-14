@@ -15,6 +15,7 @@ def preEnv():
 	api.retCmd("mkdir -p tmpFolder/winLog")
 	api.retCmd("mkdir -p tmpFolder/browserCache")
 	api.retCmd("mkdir -p tmpFolder/other")
+	api.retCmd("mkdir -p tmpFolder/network")
 	return 0
 
 def startCheck(path,outputDir):
@@ -23,9 +24,9 @@ def startCheck(path,outputDir):
 	pathLs=api.retCmd("ls "+path)
 	if "ProgramData" in pathLs or "Program Files" in pathLs:
 		print "windows check"
-		winOnLinux.start(path)
+		winOnLinux.start(path,outputDir)
 
 	elif "root" in pathLs or "mnt" in pathLs:
 		print "linux dang hoan thien"
 
-startCheck("/home/uss/Desktop/F","./")
+startCheck("/mnt/cDrive","./")

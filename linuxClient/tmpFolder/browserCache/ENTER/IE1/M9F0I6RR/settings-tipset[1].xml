@@ -1,0 +1,138 @@
+<tipSet version="1">
+  <tip id="SettingsPagePCSystemDisplay" condition="not(platform match 'surfaceHub')">
+    <title>Sleep better</title>
+    <content>
+      <p>Night light can help you get to sleep by displaying warmer colors at night. Select Night light settings to set things up.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageAppsNotifications">
+    <title>Get the notifications you want</title>
+    <content>
+      <p>To have an app start sending you notifications, go to Get notifications from these senders, and then turn on that app.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageScreenPowerAndSleep">
+    <title>Save energy and battery life</title>
+    <content>
+      <p>Make your battery last longer by choosing shorter times for screen and sleep settings.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageStorageSenseStorageOverview" condition="not(platform match 'hololens')">
+    <title>Keep clutter off your PC</title>
+    <content>
+      <p>When Storage sense is turned on, it'll free up space only when your PC is low on space. To clean up unused files now, select Configure Storage Sense or run it now &gt; Clean now.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPagePCSystemShellMode">
+    <title>What is tablet mode?</title>
+    <content>
+      <p>Tablet mode optimizes your device for touch, so you don’t have to use a keyboard and mouse. When tablet mode is on, apps open full-screen and taskbar and desktop icons are reduced.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageBatterySaver">
+    <title>Get more battery life</title>
+    <content>
+      <p>To see which apps are draining your battery, select See which apps are affecting your battery life.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageMultiTasking">
+    <title>Organize your desktop workspace</title>
+    <content>
+      <p>To switch between open apps, select the Task View button on the taskbar, or press Alt + Tab.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageDevices" condition="not(platform match '(hololens)|(surfaceHub)')">
+    <title>Turn on Bluetooth even faster</title>
+    <content>
+      <p>To turn Bluetooth on or off without opening Settings, open action center and select the Bluetooth icon.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageDevicesPrinters">
+    <title>Troubleshoot your printer</title>
+    <content>
+      <p>If you can't get your printer to work, try running the printer troubleshooter.</p>
+    </content>
+    <cta href="ms-settings:troubleshoot">
+      <text>Open troubleshooter settings</text>
+    </cta>
+  </tip>
+  <tip id="SettingsPageDevicesTouchpad">
+    <title>Touch and go</title>
+    <content>
+      <p>Swipe up with three fingers to display all your open apps, or tap an app once with two fingers to right-click.</p>
+    </content>
+    <cta href="https://go.microsoft.com/fwlink/p/?linkid=2005515&amp;ocid=SettingsTips-BingIA">
+      <text>Learn other gestures</text>
+    </cta>
+  </tip>
+  <tip id="SettingsPageManagePhone">
+    <title>See photos and send texts</title>
+    <content>
+      <p>See recent photos and send text from your Android phone. Select Add a phone to set it up.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageNetworkWiFi" condition="platform match 'desktop'">
+    <title>Connect to a wireless network</title>
+    <content>
+      <p>If you don't see the wireless network you want, select Show available networks, select the one you want, and select Connect.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageThemes">
+    <title>Get more personality in Windows</title>
+    <content>
+      <p>Download free themes from the Microsoft Store that combine wallpapers, sounds, and colors</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageAppsDefaults">
+    <title>Choose your default apps</title>
+    <content>
+      <p>Select which apps to use to listen to music, look at pictures, check mail, watch videos, and more.</p>
+      <p>Use Reset when you want to go back to the default apps that Microsoft recommends.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageAccountsEmailApp" condition="not(platform match 'hololens')">
+    <title>Set up and manage accounts</title>
+    <content>
+      <p>To change an account name, delete an account, or sync an account with another device, select your account, and then select Manage.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageEaseOfAccessNarrator">
+    <title>Read faster with scan mode</title>
+    <content>
+      <p>Turn Narrator on and press the caps lock and spacebar keys to turn on scan mode. Then press the up and down arrow keys to read everything in an app or webpage.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageWindowsDefender">
+    <title>Keep your PC safe</title>
+    <content>
+      <p>Windows Security has options to help keep you protected online, maintain your device’s health, run periodic scans, manage your threat-protection settings, and more.</p>
+    </content>
+  </tip>
+  <tip id="SettingsPageRestoreOneBackup">
+    <title>Choose the right backup option for you</title>
+    <content>
+      <p>To have Windows back up your files to a safe place, choose where you want your files to go—to the cloud, an external storage device, or a network.</p>
+    </content>
+    <cta href="https://support.microsoft.com/help/4521035/">
+      <text>Learn more about backup options</text>
+    </cta>
+  </tip>
+  <tip id="SettingsPageRestoreMusUpdate" condition="platform match 'desktop'">
+    <title>See what's new</title>
+    <content>
+      <p>Your device recently got the latest update with new features and important security improvements.</p>
+    </content>
+    <cta href="ms-get-started://collection/?id=recommended&amp;tipsetid=whats-new&amp;p=ui&amp;s=settings&amp;c=SettingsPageRestoreMusUpdate-RS5">
+      <text>Explore new features</text>
+    </cta>
+  </tip>
+  <tip id="SettingsPageActivate">
+    <title>Where's my product key?</title>
+    <content>
+      <p>Depending on how you got Windows, activation will use a digital license or a product key.</p>
+    </content>
+    <cta href="https://support.microsoft.com/help/12440/">
+      <text>Get more info about activation</text>
+    </cta>
+  </tip>
+</tipSet>
