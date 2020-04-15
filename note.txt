@@ -29,6 +29,8 @@ disk image
 https://github.com/yirkha/ntfsclone2vhd
 ntfsclone --save-image -o - /dev/sdXX | ntfsclone2vhd - /mnt/usb/output.vhd
 
+
+https://news.cloud365.vn/event-viewerlog-theo-doi-va-phan-tich-log-cua-remote-desktop-tren-windows/
 ===========================================
 tool request
 + regripper

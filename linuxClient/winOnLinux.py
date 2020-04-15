@@ -144,6 +144,72 @@ def getUserLoginHistory():
 	retUlAll.close()
 	return 0
 
+def getRDPHistory():
+	api.retCmd("rm "+outputDir+"tmpFolder/winLog/LocalSessionManagerOperational")
+	api.retCmd("rm "+outputDir+"tmpFolder/winLog/RDPHistory")
+	api.retCmd("rm "+outputDir+"tmpFolder/winLog/RemoteConnectionManagerOperational")
+	api.retCmd("rm "+outputDir+"tmpFolder/winLog/Security")
+
+	userEvent1="1"			#eventid 1149 Applications and Services Logs -> Microsoft -> Windows -> Terminal-Services-RemoteConnectionManager > Operational	
+	userEvent2="1"			#eventid 4624  4625  	Windows -> Security
+	userEvent3="1"			#eventid 21 23 	Applications and Services Logs -> Microsoft -> Windows -> TerminalServices-LocalSessionManager -> Operational
+	listLog = api.retCmd("ls "+outputDir+"tmpFolder/winLog/Logs").split("\n")
+	retFile = open(outputDir+"tmpFolder/winLog/RDPHistory","a")
+	for list1 in listLog:
+		if "RemoteConnectionManager" in list1 and "Operational" in list1:
+			userEvent1=list1
+		if "Security.evtx" in list1:
+			userEvent2 = list1
+		if "LocalSessionManager" in list1 and "Operational" in list1:
+			userEvent3=list1 
+	if userEvent1 !=1:
+		
+		api.retCmd(api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/RemoteConnectionManagerOperational -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent1))
+		tmpdata = open(outputDir+"tmpFolder/winLog/RemoteConnectionManagerOperational","r").read().split("Record")
+		for a in tmpdata:
+			if '"EventID": 1149' in a:
+				retFile.write("Remote Desktop Services: User authentication succeeded\n")
+				retFile.write("Record "+a)
+				retFile.write("\n<-->\n")
+	else:
+		retFile.write("Missing file tmpFolder/winLog/Logs/Microsoft-Windows-TerminalServices-RemoteConnectionManager%4Operational.evtx")
+
+	retFile.write("----------------------------------------\n")
+
+	if userEvent2 !=1:
+		api.retCmd(api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/Security -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent2))
+		tmpdata = open(outputDir+"tmpFolder/winLog/Security","r").read().split("Record")
+		for a in tmpdata:
+			if '"EventID": 4624' in a:
+				retFile.write("An account was successfully logged on\n")
+				retFile.write("Record "+a)
+				retFile.write("\n<-->\n")
+			if '"EventID": 4625 ' in a:
+				retFile.write("An account failed to log on\n")
+				retFile.write("Record "+a)
+				retFile.write("\n<-->\n")
+	else:
+		retFile.write("Missing file tmpFolder/winLog/Logs/Security.evtx")
+
+	retFile.write("----------------------------------------\n")
+
+	if userEvent3 !=1:
+		api.retCmd(api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/LocalSessionManagerOperational -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent2))
+		tmpdata = open(outputDir+"tmpFolder/winLog/LocalSessionManagerOperational","r").read().split("Record")
+		for a in tmpdata:
+			if '"EventID": 21' in a:
+				retFile.write("Remote Desktop Services: Session logon succeeded\n")
+				retFile.write("Record "+a)
+				retFile.write("\n<-->\n")
+			if '"EventID": 23' in a:
+				retFile.write("Remote Desktop Services: Session logoff succeeded\n")
+				retFile.write("Record "+a)
+				retFile.write("\n<-->\n")
+	else:
+		retFile.write("Missing file tmpFolder/winLog/Logs/Microsoft-Windows-TerminalServices-LocalSessionManager%4Operational.evtx")
+
+	retFile.close()
+
 def getNetworkConfig():
 	retFile = open(outputDir+"tmpFolder/network/status.txt","a")
 	if not os.path.exists(outputDir+"tmpFolder/reg/config/SYSTEM"):
@@ -208,7 +274,9 @@ def start(inPath,retDir):
 	# getBrowserCache()
 	# getUserLoginHistory()
 
-	getNetworkConfig()
+	# getNetworkConfig()
+
+	getRDPHistory()
 
 
 
