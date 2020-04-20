@@ -286,13 +286,16 @@ def start(inPath,retDir):
 		inputPath=inputPath+"/"
 	if outputDir[-1] != "/":
 		outputDir=outputDir+"/"
-		
+
+	print "getRoughData part"
 	getRoughData()
+	print "getBrowserCache part"
 	getBrowserCache()
+	print "getUserLoginHistory part"
 	getUserLoginHistory()
-
+	print "getNetworkConfig part"
 	getNetworkConfig()
-
+	print "getRDPHistory part"
 	getRDPHistory()
 
 

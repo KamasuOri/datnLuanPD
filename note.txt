@@ -36,3 +36,19 @@ tool request
 + regripper
 https://github.com/yirkha/ntfsclone2vhd
 ntfsclone 
+
+
+
+
+
+
+=========================
+build file in linux 
+
+sudo apt-get install gcj-jdk
+After that, cd into the directory of where the .jar file is located, let's say the .jar file is myFile.jar, then do:
+
+gcj myFile.jar -o newNameofTheFile --main=theMainClassNameofTheFile
+to compile the .jar file. And it should work like an executable by just running it in the command line like this:
+
+./newNameofTheFile
