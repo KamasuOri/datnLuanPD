@@ -1107,7 +1107,7 @@ public class Main extends javax.swing.JFrame {
                     curProcScreen.curMess.setText("Lấy dữ liệu thô ban đầu...");
                     curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
                     
-                    BaseFunction.ioctlCallWinTool("getRoughData");
+                    //BaseFunction.ioctlCallWinTool("getRoughData");
  
                     double thoiGianBatDau = new Date().getTime();
                     
@@ -1117,7 +1117,7 @@ public class Main extends javax.swing.JFrame {
                     if (bang1.getValueAt(0, 0).toString().equals("true")) {           
                         curProcScreen.curMess.setText("Lấy cache trình duyệt...");
                         curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
-                        BaseFunction.ioctlCallWinTool("getBrowserCache");
+                       // BaseFunction.ioctlCallWinTool("getBrowserCache");
                         
                     }
                     //check chọn các cổng được mở:
@@ -1138,15 +1138,21 @@ public class Main extends javax.swing.JFrame {
                         curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
                         BaseFunction.ioctlCallWinTool("getRDPHistory");
                     }
-                    
+                    String ret = null;
                     if (bang1.getValueAt(4, 0).toString().equals("true")) {
                         curProcScreen.curMess.setText("Lấy copyChosenFile...");
                         curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                        
                         copyListFile.setVisible(true);
                         copyListFile.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-                        BaseFunction.ioctlCallWinTool("copyChosenFile");
+                        ret=BaseFunction.ioctlCallWinTool("copyChosenFile");
                     }
-        
+                    
+//                    while (copyListFile.isVisible()){
+//                        //System.out.println(".");
+//                    }
+                    System.out.println("11111111111111111111111111111111111111111111111111111111111");
+                    System.out.println(ret);
         
         
         
@@ -1228,7 +1234,7 @@ public class Main extends javax.swing.JFrame {
                     //
                     loadTableHistory();
                     
-                    //curProcScreen.curMess.setText("Hoàn thành !!!");
+                    curProcScreen.curMess.setText("Hoàn thành !!!");
                     curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
                 } catch (IOException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -1583,6 +1589,7 @@ public class Main extends javax.swing.JFrame {
         return property;
     }
     
+
     public static void main(String args[]) throws IOException, InterruptedException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
