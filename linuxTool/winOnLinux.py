@@ -62,6 +62,7 @@ def getRoughData():
 	return 0
 
 def getBrowserCache():
+	getUserAndSID()
 	for userName in userList:
 		cacheStore = outputDir+"tmpFolder/browserCache/"+userName
 		api.retCmd("mkdir -p "+cacheStore)
@@ -98,9 +99,11 @@ def getBrowserCache():
 		# ---------------------------------------------------------------------------------------
 		
 def getUserLoginHistory():
+	getUserAndSID()
 	api.retCmd("rm "+outputDir+"tmpFolder/winLog/MicrosoftWindowsUserProfileService")
 	api.retCmd("rm "+outputDir+"tmpFolder/winLog/retUserLoginHistory")
 	listLog = api.retCmd("ls "+outputDir+"tmpFolder/winLog/Logs").split("\n")
+	print listLog
 	userEvent="1"
 	for list1 in listLog:
 		if "Microsoft-Windows-User Profile Service" in list1:
@@ -109,7 +112,7 @@ def getUserLoginHistory():
 	if userEvent == "1":
 		print "Have no user Event check the exist of 'Microsoft-Windows-User Profile Service' in folder "+outputDir+"tmpFolder/winLog/Logs"
 		return 1
-	api.retCmd(api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/MicrosoftWindowsUserProfileService -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent))
+	api.retCmd("linuxTool/"+api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/MicrosoftWindowsUserProfileService -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent))
 	ulAll = open(outputDir+"tmpFolder/winLog/MicrosoftWindowsUserProfileService","rb").read().split("Record ")
 	retUlAll= open(outputDir+"tmpFolder/winLog/retUserLoginHistory","wb")
 	for ul in ulAll:
@@ -125,8 +128,14 @@ def getUserLoginHistory():
 				if userName in uN:
 					userName = uN.split("<-->")[0]
 					break
-			retUlAll.write("User::::::::"+userName+"::::::::login\n Record "+ul)
+			retUlAll.write("User::::::::"+userName+"::::::::login\n")
+			for line in ul.split("\n"):
+				if "Guid" in line or "UserID" in line or "SystemTime" in line:
+					line = line.replace(" ","")
+					line="   "+line
+					retUlAll.write(line+"\n")
 			retUlAll.write("--------------------------------------------------------------------------------------------------------\n")
+
 
 		elif '"EventID":4' in tmp :
 			tmp = tmp.split("\n")
@@ -139,8 +148,14 @@ def getUserLoginHistory():
 				if userName in uN:
 					userName = uN.split("<-->")[0]
 					break
-			retUlAll.write("User::::::::"+userName+"::::::::logoff\n Record"+ul)
+			retUlAll.write("User::::::::"+userName+"::::::::logoff\n")
+			for line in ul.split("\n"):
+				if "Guid" in line or "UserID" in line or "SystemTime" in line:
+					line = line.replace(" ","")
+					line="   "+line
+					retUlAll.write(line+"\n")
 			retUlAll.write("--------------------------------------------------------------------------------------------------------\n")
+
 	retUlAll.close()
 	return 0
 
@@ -164,7 +179,7 @@ def getRDPHistory():
 			userEvent3=list1 
 	if userEvent1 !=1:
 		
-		api.retCmd(api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/RemoteConnectionManagerOperational -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent1))
+		api.retCmd("linuxTool/"+api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/RemoteConnectionManagerOperational -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent1))
 		tmpdata = open(outputDir+"tmpFolder/winLog/RemoteConnectionManagerOperational","r").read().split("Record ")
 		for a in tmpdata:
 			if '"EventID": 1149' in a and '"UserData"' in a:
@@ -187,7 +202,7 @@ def getRDPHistory():
 	retFile.write("----------------------------------------\n")
 
 	if userEvent2 !=1:
-		api.retCmd(api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/Security -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent2))
+		api.retCmd("linuxTool/"+api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/Security -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent2))
 		tmpdata = open(outputDir+"tmpFolder/winLog/Security","r").read().split("Record ")
 		for a in tmpdata:
 			if '"EventID": 4624' in a and '"IpAddress": "-"' not in a:
@@ -210,7 +225,7 @@ def getRDPHistory():
 	retFile.write("----------------------------------------\n")
 
 	if userEvent3 !=1:
-		api.retCmd(api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/LocalSessionManagerOperational -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent2))
+		api.retCmd("linuxTool/"+api.toolDir+"/evtx_dump -f "+outputDir+"tmpFolder/winLog/LocalSessionManagerOperational -o json "+outputDir+"tmpFolder/winLog/Logs/"+api.checkPath(userEvent2))
 		tmpdata = open(outputDir+"tmpFolder/winLog/LocalSessionManagerOperational","r").read().split("Record ")
 		for a in tmpdata:
 			if '"EventID": 21' in a:
@@ -277,7 +292,20 @@ def getNetworkConfig():
 	except:
 		print "fail in getNetworkConfig"
 
-def start(inPath,retDir):
+def copyChosenFile():
+	f = open("FileNeedCopy.txt","r").read().split("\n")
+
+	count=0
+	for file in f:
+		if len(file)>2:
+			path = outputDir+"tmpFolder/fileCopyOption/"+str(count)
+			api.retCmd("mkdir -p "+path)
+			api.copyFile(inputPath+file,path)
+			count +=1
+
+
+
+def main(inPath,retDir,ioctl):
 	global inputPath
 	global outputDir
 	outputDir = retDir
@@ -287,18 +315,20 @@ def start(inPath,retDir):
 	if outputDir[-1] != "/":
 		outputDir=outputDir+"/"
 
-	print "getRoughData part"
-	getRoughData()
-	print "getBrowserCache part"
-	getBrowserCache()
-	print "getUserLoginHistory part"
-	getUserLoginHistory()
-	print "getNetworkConfig part"
-	getNetworkConfig()
-	print "getRDPHistory part"
-	getRDPHistory()
 
-
+# ioctl part 
+	if "getRoughData" in ioctl:
+		getRoughData()
+	if "getNetworkConfig" in ioctl:
+		getNetworkConfig()
+	if "getBrowserCache" in ioctl:
+		getBrowserCache()
+	if "getUserLoginHistory" in ioctl:
+		getUserLoginHistory()
+	if "getRDPHistory" in ioctl:
+		getRDPHistory()
+	if "copyChosenFile" in ioctl:
+		copyChosenFile()
 
 
 # start("/mnt/cDrive","./")

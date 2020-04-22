@@ -11,7 +11,11 @@ def checkPath(path):
 		return "'"+path+"'"
 	else:
 		return path
-
+def fillPath(path):
+	if " " in path:
+		return "'"+path+"'"
+	return path
+	
 def copyFile(dest,src):
 	# print dest
 	if  os.path.isfile(dest):

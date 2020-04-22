@@ -1,32 +1,49 @@
 
 import os
 import commands
-
+import  time
+import sys
 import api
 import winOnLinux
 
-def preEnv():
+outputDir=''
+path=''
 
-	# if os.path.exists("tmpFolder"):
-	# 	print "can xoa thu muc 'tmpFolder' truoc khi thuc hien"
-	# 	return 1
-	api.retCmd("rm -r  tmpFolder")
-	api.retCmd("mkdir -p tmpFolder/reg")
-	api.retCmd("mkdir -p tmpFolder/winLog")
-	api.retCmd("mkdir -p tmpFolder/browserCache")
-	api.retCmd("mkdir -p tmpFolder/other")
-	api.retCmd("mkdir -p tmpFolder/network")
+
+def preEnv():
+	global outputDir
+
+	if os.path.exists(api.fillPath(outputDir+"tmpFolder")):
+		today = str(time.time()).replace(".","")
+		api.retCmd("mv "+api.fillPath(outputDir+"tmpFolder")+" "+api.fillPath(outputDir+"tmpFolder"+today))
+	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/reg"))
+	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/winLog"))
+	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/browserCache"))
+	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/other"))
+	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/network"))
+	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/fileCopyOption"))
 	return 0
 
-def startCheck(path,outputDir):
-	if preEnv():
-		exit(0)
+def main():
+	global path
+	global outputDir
+	f = open("control.txt","r").read().split("\n")
+
+	outputDir=f[0]
+	path=f[1]
+	if outputDir[-1] != "/":
+		outputDir=outputDir+"/"
+	if path[-1] != "/":
+		path=path+"/"
+
+	if "preEnv" in sys.argv[1]:
+		preEnv()
 	pathLs=api.retCmd("ls "+path)
 	if "ProgramData" in pathLs or "Program Files" in pathLs:
-		print "windows check"
-		winOnLinux.start(path,outputDir)
+		winOnLinux.main(path,outputDir,sys.argv[1])
 
-	elif "root" in pathLs or "mnt" in pathLs:
-		print "linux dang hoan thien"
+	return 0
 
-startCheck("/mnt/cDrive","./")
+
+if __name__ == '__main__':
+    main()

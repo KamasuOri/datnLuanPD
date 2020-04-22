@@ -5,10 +5,12 @@
  */
 package presentation.screen;
 
+
 import DAL.Evidence;
 import DAL.EvidenceBonus;
 import DAL.HistoryTime;
 import DAL.Output;
+import business.BaseFunction;
 import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.File;
@@ -49,8 +51,8 @@ public class Main extends javax.swing.JFrame {
     public static ArrayList<HistoryTime> listHistoryTimes = new ArrayList<>();
     public static ArrayList<Output> listOutputs = new ArrayList<>();
 
-    Tmp tmp = new Tmp();
-
+    curProcScreen curProcScreen  = new curProcScreen();
+    copyListFile copyListFile = new copyListFile();
     String path;
 
     public static ArrayList<Evidence> listAllVolatile = Evidence.listAllVolatile();
@@ -310,6 +312,7 @@ public class Main extends javax.swing.JFrame {
         bang_phu = new javax.swing.JTable();
         nut_xem = new javax.swing.JButton();
         nut_refresh = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -888,6 +891,13 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jButton3.setText("testOption");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("File");
 
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
@@ -1009,11 +1019,13 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(project, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(tabpane, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(tao_lan_thu_thap_moi)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(mo_lan_thu_thap_cu))
-                    .addComponent(tabpane, javax.swing.GroupLayout.PREFERRED_SIZE, 774, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(mo_lan_thu_thap_cu)
+                        .addGap(145, 145, 145)
+                        .addComponent(jButton3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(trang_thai_thu_thap_pane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1026,11 +1038,12 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(tao_lan_thu_thap_moi)
-                            .addComponent(mo_lan_thu_thap_cu))
+                            .addComponent(mo_lan_thu_thap_cu)
+                            .addComponent(jButton3))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tabpane))
                     .addComponent(project)
-                    .addComponent(trang_thai_thu_thap_pane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(trang_thai_thu_thap_pane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1045,13 +1058,12 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_mo_lan_thu_thap_cuActionPerformed
 
     private void tao_lan_thu_thap_moiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tao_lan_thu_thap_moiActionPerformed
-        // TODO add your handling code here:
-
+        
         mo_lan_thu_thap_cu.setVisible(false);
         tao_lan_thu_thap_moi.setVisible(false);
         new TaoMoi().setVisible(true);
         TaoMoi.OK_rename.setVisible(false);
-
+        
     }//GEN-LAST:event_tao_lan_thu_thap_moiActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -1080,125 +1092,149 @@ public class Main extends javax.swing.JFrame {
             valid_main.setVisible(true);
         } else {
             int chose = JOptionPane.showConfirmDialog(null, "Bắt đầu thu thập dữ liệu?", "Message", 0);
-            if (chose == 0) {
-                tmp.setVisible(true);
 
-                //valid_main.setVisible(true);
-                double thoiGianBatDau = new Date().getTime();
+            if (chose == 0) { 
+                try {
 
-                //
-                valid_main.setVisible(false);
-                //check chọn trạng thái mạng:
-                if (bang1.getValueAt(0, 0).toString().equals("true")) {
-
-                    try {
-                        business.Function.networkStatus();
+                    curProcScreen.setVisible(true);
+                    curProcScreen.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    
+                    curProcScreen.curMess.setText("Khởi tạo môi trường....");
+                    curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                    BaseFunction.ioctlCallWinTool("preEnv");
+                    
+                    
+                    curProcScreen.curMess.setText("Lấy dữ liệu thô ban đầu...");
+                    curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                    
+                    BaseFunction.ioctlCallWinTool("getRoughData");
+ 
+                    double thoiGianBatDau = new Date().getTime();
+                    
+                    //
+                    valid_main.setVisible(false);
+                    //check chọn trạng thái mạng:
+                    if (bang1.getValueAt(0, 0).toString().equals("true")) {           
+                        curProcScreen.curMess.setText("Lấy cache trình duyệt...");
+                        curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                        BaseFunction.ioctlCallWinTool("getBrowserCache");
+                        
+                    }
+                    //check chọn các cổng được mở:
+                    if (bang1.getValueAt(1, 0).toString().equals("true")) {
+                        curProcScreen.curMess.setText("Lấy getUserLoginHistory...");
+                        curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                        BaseFunction.ioctlCallWinTool("getUserLoginHistory");
+                    }
+                    //check chọn các kết nối đã được thiết lập:
+                    if (bang1.getValueAt(2, 0).toString().equals("true")) {
+                        curProcScreen.curMess.setText("Lấy getNetworkConfig..");
+                        curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                        BaseFunction.ioctlCallWinTool("getNetworkConfig");
+                    }
+                    //check chọn bảng định tuyến:
+                    if (bang1.getValueAt(3, 0).toString().equals("true")) {
+                        curProcScreen.curMess.setText("Lấy getRDPHistory...");
+                        curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                        BaseFunction.ioctlCallWinTool("getRDPHistory");
+                    }
+                    
+                    if (bang1.getValueAt(4, 0).toString().equals("true")) {
+                        curProcScreen.curMess.setText("Lấy copyChosenFile...");
+                        curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                        copyListFile.setVisible(true);
+                        copyListFile.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                        BaseFunction.ioctlCallWinTool("copyChosenFile");
+                    }
+        
+        
+        
+        
+                    
+                    //check chọn thông tin thêm đầu tiên bảng 1
+                    int t = listBonus.size();
+                    System.out.println(t);
+                    if (t > 0) {
+                        for (int i = 16, j = 0; i <= 16 + t - 1; i++, j++) {
+                            if (bang1.getValueAt(i, 0).toString().equals("true")) {
+                                business.BaseFunction.baseFunction("cmd", listBonus.get(j).getCommand(), diachi.getText() + "\\" + bang1.getValueAt(i, 2).toString() + bang1.getValueAt(i, 3).toString());
+                            }
+                        }
+                    }
+                    
+                    bang_phu.setVisible(true);
+                    nut_xem.setVisible(true);
+                    nut_refresh.setVisible(true);
+                    
+                    //
+                    loadTableOutput();
+                    Main.proper.setVisible(true);
+                    //tong thu thap:
+                    
+                    tong.setText("Tổng số thông tin thu thập: " + d);
+                    //tổng số thu thập thành công:
+                    int tongSoThuThap = 0;
+                    for (int i = 0; i < bang_phu.getRowCount(); i++) {
+                        if (bang_phu.getValueAt(i, 1).toString().equals("ERROR") == false) {
+                            tongSoThuThap++;
+                            
+                        }
+                    }
+                    
+                    tong_thanh_cong.setText("Tổng số thu thập thành công: " + tongSoThuThap);
+                    tong_that_bai.setText("Tổng số thu thập thất bại: " + (d - tongSoThuThap));
+                    
+                    double thoiGianKetThuc = new Date().getTime();
+                    
+                    tong_thoi_gian.setText("Tổng thời gian thu thập: " + (thoiGianKetThuc - thoiGianBatDau) / 1000 + "s");
+                    SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
+                    thoi_gian.setText("Thời gian thu thập: " + formatter.format(new Date()));
+                    he_dieu_hanh.setText("Hệ điều hành: Windows 10");
+                    //JOptionPane.showMessageDialog(this, "Đã thu thập xong!");
+                    //load table history:
+                    HistoryTime h = new HistoryTime();
+                    h.setStt(banglichsu.getRowCount() + 1);
+                    h.setThoiGian(formatter.format(new Date()));
+                    h.setTongSoTT(d);
+                    h.setSoThanhCong(tongSoThuThap);
+                    h.setSoThatBai(d - tongSoThuThap);
+                    h.setTongThoiGian((thoiGianKetThuc - thoiGianBatDau) / 1000 + "s");
+                    listOutputs = new ArrayList<>();
+                    
+                    for (int i = 0; i < bang1.getRowCount(); i++) {
+                        if (bang1.getValueAt(i, 0).toString().equals("true")) {
+                            Output o = new Output();
+                            o.setName(bang1.getValueAt(i, 1).toString());
+                            Path path = Paths.get(TaoMoi.diachi.getText() + "\\" + bang1.getValueAt(i, 2).toString() + bang1.getValueAt(i, 3).toString());
+                            
+                            double fileLength = new File(path.toString()).length();
+                            
+                            if (Files.exists(path) && (fileLength > 0)) {
+                                o.setSuccess(TaoMoi.diachi.getText() + "\\" + bang1.getValueAt(i, 2).toString() + bang1.getValueAt(i, 3).toString());
+                                
+                            } else {
+                                o.setSuccess("ERROR");
+                                
+                            }
+                            listOutputs.add(o);
+                            
+                        }
+                    }
+                    
+                    
+                    h.setBangChiTiet(listOutputs);
+                    listHistoryTimes.add(h);
+                    
+                    //
+                    loadTableHistory();
+                    
+                    //curProcScreen.curMess.setText("Hoàn thành !!!");
+                    curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
+                } catch (IOException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
-                }
-                //check chọn các cổng được mở:
-                if (bang1.getValueAt(1, 0).toString().equals("true")) {
-                    business.Function.openingPort();
-                }
-                //check chọn các kết nối đã được thiết lập:
-                if (bang1.getValueAt(2, 0).toString().equals("true")) {
-                    business.Function.establishedConnection();
-                }
-                //check chọn bảng định tuyến:
-                if (bang1.getValueAt(3, 0).toString().equals("true")) {
-                    business.Function.routerTable();
-                }
-
-                //check chọn dữ liệu trao đổi qua các cổng:
-//                if (bang1.getValueAt(4, 0).toString().equals("true")) {
-//                    business.Function.dataPort();
-//                }
-
-             
-
-                //NON VOLATILE:
-                //check chọn cấu hình máy tính:
-
-
-                //check chọn thông tin thêm đầu tiên bảng 1
-                int t = listBonus.size();
-                System.out.println(t);
-                if (t > 0) {
-                    for (int i = 16, j = 0; i <= 16 + t - 1; i++, j++) {
-                        if (bang1.getValueAt(i, 0).toString().equals("true")) {
-                            business.BaseFunction.baseFunction("cmd", listBonus.get(j).getCommand(), diachi.getText() + "\\" + bang1.getValueAt(i, 2).toString() + bang1.getValueAt(i, 3).toString());
-                        }
-                    }
-                }
-
-                bang_phu.setVisible(true);
-                nut_xem.setVisible(true);
-                nut_refresh.setVisible(true);
-
-                //
-                loadTableOutput();
-                Main.proper.setVisible(true);
-                //tong thu thap:
-
-                tong.setText("Tổng số thông tin thu thập: " + d);
-                //tổng số thu thập thành công:
-                int tongSoThuThap = 0;
-                for (int i = 0; i < bang_phu.getRowCount(); i++) {
-                    if (bang_phu.getValueAt(i, 1).toString().equals("ERROR") == false) {
-                        tongSoThuThap++;
-
-                    }
-                }
-
-                tong_thanh_cong.setText("Tổng số thu thập thành công: " + tongSoThuThap);
-                tong_that_bai.setText("Tổng số thu thập thất bại: " + (d - tongSoThuThap));
-
-                double thoiGianKetThuc = new Date().getTime();
-
-                tong_thoi_gian.setText("Tổng thời gian thu thập: " + (thoiGianKetThuc - thoiGianBatDau) / 1000 + "s");
-                SimpleDateFormat formatter = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-                thoi_gian.setText("Thời gian thu thập: " + formatter.format(new Date()));
-                he_dieu_hanh.setText("Hệ điều hành: Windows 10");
-                tmp.setVisible(false);
-                JOptionPane.showMessageDialog(this, "Đã thu thập xong!");
-                //load table history:
-                HistoryTime h = new HistoryTime();
-                h.setStt(banglichsu.getRowCount() + 1);
-                h.setThoiGian(formatter.format(new Date()));
-                h.setTongSoTT(d);
-                h.setSoThanhCong(tongSoThuThap);
-                h.setSoThatBai(d - tongSoThuThap);
-                h.setTongThoiGian((thoiGianKetThuc - thoiGianBatDau) / 1000 + "s");
-                listOutputs = new ArrayList<>();
-
-                for (int i = 0; i < bang1.getRowCount(); i++) {
-                    if (bang1.getValueAt(i, 0).toString().equals("true")) {
-                        Output o = new Output();
-                        o.setName(bang1.getValueAt(i, 1).toString());
-                        Path path = Paths.get(TaoMoi.diachi.getText() + "\\" + bang1.getValueAt(i, 2).toString() + bang1.getValueAt(i, 3).toString());
-
-                        double fileLength = new File(path.toString()).length();
-
-                        if (Files.exists(path) && (fileLength > 0)) {
-                            o.setSuccess(TaoMoi.diachi.getText() + "\\" + bang1.getValueAt(i, 2).toString() + bang1.getValueAt(i, 3).toString());
-
-                        } else {
-                            o.setSuccess("ERROR");
-
-                        }
-                        listOutputs.add(o);
-
-                    }
-                }
-
-
-                h.setBangChiTiet(listOutputs);
-                listHistoryTimes.add(h);
-
-                //
-                loadTableHistory();
 
             }else{
                 //this.dispose();
@@ -1371,13 +1407,13 @@ public class Main extends javax.swing.JFrame {
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // TODO add your handling code here:
-        new About().setVisible(true);
+//        new About().setVisible(true);
 
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void dung_thu_thapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dung_thu_thapActionPerformed
         // TODO add your handling code here:
-        tmp.setVisible(false);
+
         JOptionPane.showMessageDialog(this, "Bạn có chắc chắn muốn dừng thu thập?");
     }//GEN-LAST:event_dung_thu_thapActionPerformed
 
@@ -1522,34 +1558,29 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_chontatcaActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        copyListFile.setVisible(true);
+        copyListFile.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        try {
+            BaseFunction.ioctlCallWinTool("copyChosenFile");
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
-    public static String execCMD(String cmd) throws IOException, InterruptedException{
-        
-        String command = "ping -c 3 www.google.com";
-
-        Process proc = Runtime.getRuntime().exec(cmd);
-
-        // Read the output
-
-        BufferedReader reader =  
-              new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-        String line = "";
-        String ret = "";
-        while((line = reader.readLine()) != null) {
-           ret +=line;
-           ret +="\n";
-        }
-        proc.waitFor();
-        
-        String result = null;
-        if ((ret != null) && (ret.length() > 0)) {
-            result = ret.substring(0, ret.length() - 1);
-        }
-        return result;
+    
+    public static String checkAdmin(){
+        String property = System.getProperty("user.name");
+        return property;
     }
     
     public static void main(String args[]) throws IOException, InterruptedException {
@@ -1576,17 +1607,14 @@ public class Main extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+//              System.out.print(checkAdmin());
                 new Main().setVisible(true);
             }
         });
-
-        
-         
-        
 
     }
     
@@ -1617,6 +1645,7 @@ public class Main extends javax.swing.JFrame {
     public static javax.swing.JLabel inputDir;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;

@@ -127,6 +127,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="diachi">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="/home/uss/Desktop/datn/datnLuanPD/linuxGUI/dist/linuxTool"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>
@@ -195,6 +198,9 @@
       </AuxValues>
     </Component>
     <Component class="javax.swing.JTextField" name="inputDir">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="/mnt/cDrive"/>
+      </Properties>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
       </AuxValues>

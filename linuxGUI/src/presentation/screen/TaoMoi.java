@@ -5,6 +5,9 @@
  */
 package presentation.screen;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import presentation.screen.Main;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -70,6 +73,8 @@ public class TaoMoi extends javax.swing.JFrame {
 
         jLabel2.setText("Địa chỉ lưu thông tin thu thập");
 
+        diachi.setText("/home/uss/Desktop/datn/datnLuanPD/linuxGUI/dist/linuxTool");
+
         jButton1.setText("Browser");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,6 +113,8 @@ public class TaoMoi extends javax.swing.JFrame {
                 OK_renameActionPerformed(evt);
             }
         });
+
+        inputDir.setText("/mnt/cDrive");
 
         jLabel3.setText("Địa chỉ ổ đĩa cần thu thập");
 
@@ -242,8 +249,24 @@ public class TaoMoi extends javax.swing.JFrame {
             Main.b1.setVisible(true);
             Main.b2.setVisible(true);
             Main.chon_tat_ca.setVisible(true);
-
+            
+            String control = diachi.getText()+"\n"+inputDir.getText();
+            try (FileWriter writer = new FileWriter("linuxTool/control.txt");
+                BufferedWriter bw = new BufferedWriter(writer)) {
+                bw.write(control);
+            } catch (IOException e) {
+                System.err.format("IOException: %s%n", e);
+            }
+            
+            try (FileWriter writer1 = new FileWriter("control.txt");
+                BufferedWriter bw = new BufferedWriter(writer1)) {
+                bw.write(control);
+            } catch (IOException e) {
+                System.err.format("IOException: %s%n", e);
+            }
+            
             this.dispose();
+            
         }
 
     }//GEN-LAST:event_OK_taomoiActionPerformed

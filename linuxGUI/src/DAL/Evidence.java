@@ -66,6 +66,7 @@ public class Evidence {
         listVolatiles.add(new Evidence(false, "getUserLoginHistory", "getUserLoginHistory", ".txt"));
         listVolatiles.add(new Evidence(false, "getNetworkConfig", "getNetworkConfig", ".txt"));
         listVolatiles.add(new Evidence(false, "getRDPHistory", "getRDPHistory", ".txt"));
+        listVolatiles.add(new Evidence(false, "copyChosenFile", "copyChosenFile", ".txt"));
 
         return listVolatiles;
     }

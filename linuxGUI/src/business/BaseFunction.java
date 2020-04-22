@@ -5,10 +5,12 @@
  */
 package business;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -23,10 +25,35 @@ import java.util.Date;
  */
 public class BaseFunction {
 
-    /**
-     * Hàm cơ sở để xây dựng thu thập cho tất cả các hàm riêng hàm này chỉ chạy
-     * 1 câu lệnh
-     */
+    public static String execCMD(String cmd) throws IOException, InterruptedException{
+        Process proc = Runtime.getRuntime().exec(cmd);
+        // Read the output
+        BufferedReader reader =  
+              new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        String line = "";
+        String ret = "";
+        while((line = reader.readLine()) != null) {
+           ret +=line;
+           ret +="\n";
+        }
+        proc.waitFor();
+        
+        String result = null;
+        if ((ret != null) && (ret.length() > 0)) {
+            result = ret.substring(0, ret.length() - 1);
+        }
+        return result;
+    }
+    
+    public static String ioctlCallWinTool(String ioctf) throws IOException, InterruptedException{
+//        System.out.println(execCMD("pwd"));
+//        System.out.println("python linuxTool/start.py "+ioctf);
+        String test =  execCMD("python linuxTool/start.py "+ ioctf);
+        
+        return test;
+    }
+    
+    
     public static void baseFunction(String way, String command, String path) {
         Process p;
         try {
