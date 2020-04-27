@@ -303,6 +303,8 @@ def copyChosenFile():
 			api.copyFile(inputPath+file,path)
 			count +=1
 
+def getMRUCache():
+	api.copyFile(outputDir+"tmpFolder/reg/userReg",outputDir+"tmpFolder/MRUCache")
 
 
 def main(inPath,retDir,ioctl):
@@ -329,6 +331,8 @@ def main(inPath,retDir,ioctl):
 		getRDPHistory()
 	if "copyChosenFile" in ioctl:
 		copyChosenFile()
+	if "getMRUCache" in ioctl:
+		getMRUCache()
 
 
 # start("/mnt/cDrive","./")

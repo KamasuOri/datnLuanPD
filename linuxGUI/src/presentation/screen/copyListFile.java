@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import presentation.screen.Main;
 
 /**
  *
@@ -125,7 +126,7 @@ public class copyListFile extends javax.swing.JFrame {
             } catch (InterruptedException ex) {
                 Logger.getLogger(copyListFile.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            Main.checkInputListFileCopy=1;
         }
     }//GEN-LAST:event_OKActionPerformed
 

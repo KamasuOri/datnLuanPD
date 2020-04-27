@@ -1,3 +1,0 @@
-1.txt
-Config.Msi
-Users/desktop.ini

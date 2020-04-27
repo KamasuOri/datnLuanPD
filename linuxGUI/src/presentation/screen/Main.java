@@ -1090,7 +1090,14 @@ public class Main extends javax.swing.JFrame {
 
         if (d == 0) {
             valid_main.setVisible(true);
-        } else {
+        } 
+        if (checkInputListFileCopy==0  && bang1.getValueAt(4, 0).toString().equals("true")){
+            JOptionPane.showMessageDialog(null, "Chức năng lấy file theo list cần nhập listfile trước !", "!!!!!!", JOptionPane.INFORMATION_MESSAGE);
+            copyListFile.setVisible(true);
+            copyListFile.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        }
+
+        else {
             int chose = JOptionPane.showConfirmDialog(null, "Bắt đầu thu thập dữ liệu?", "Message", 0);
 
             if (chose == 0) { 
@@ -1107,7 +1114,7 @@ public class Main extends javax.swing.JFrame {
                     curProcScreen.curMess.setText("Lấy dữ liệu thô ban đầu...");
                     curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
                     
-                    //BaseFunction.ioctlCallWinTool("getRoughData");
+                    BaseFunction.ioctlCallWinTool("getRoughData");
  
                     double thoiGianBatDau = new Date().getTime();
                     
@@ -1117,7 +1124,7 @@ public class Main extends javax.swing.JFrame {
                     if (bang1.getValueAt(0, 0).toString().equals("true")) {           
                         curProcScreen.curMess.setText("Lấy cache trình duyệt...");
                         curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
-                       // BaseFunction.ioctlCallWinTool("getBrowserCache");
+                        BaseFunction.ioctlCallWinTool("getBrowserCache");
                         
                     }
                     //check chọn các cổng được mở:
@@ -1142,21 +1149,9 @@ public class Main extends javax.swing.JFrame {
                     if (bang1.getValueAt(4, 0).toString().equals("true")) {
                         curProcScreen.curMess.setText("Lấy copyChosenFile...");
                         curProcScreen.curMess.paintImmediately(curProcScreen.curMess.getVisibleRect());
-                        
-                        copyListFile.setVisible(true);
-                        copyListFile.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
                         ret=BaseFunction.ioctlCallWinTool("copyChosenFile");
                     }
-                    
-//                    while (copyListFile.isVisible()){
-//                        //System.out.println(".");
-//                    }
-                    System.out.println("11111111111111111111111111111111111111111111111111111111111");
-                    System.out.println(ret);
-        
-        
-        
-                    
+
                     //check chọn thông tin thêm đầu tiên bảng 1
                     int t = listBonus.size();
                     System.out.println(t);
@@ -1625,7 +1620,8 @@ public class Main extends javax.swing.JFrame {
 
     }
     
-    
+
+    public static int checkInputListFileCopy=0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel a1;
     private javax.swing.JTextField a2;

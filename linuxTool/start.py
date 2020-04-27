@@ -22,6 +22,7 @@ def preEnv():
 	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/other"))
 	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/network"))
 	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/fileCopyOption"))
+
 	return 0
 
 def main():

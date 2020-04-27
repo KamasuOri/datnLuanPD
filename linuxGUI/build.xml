@@ -10,6 +10,17 @@
 <project name="linuxGUI" default="default" basedir=".">
     <description>Builds, tests, and runs the project linuxGUI.</description>
     <import file="nbproject/build-impl.xml"/>
+	
+	<target name="-post-compile-single" depends="-post-compile"/>
+ 
+	<target name="-post-compile">
+		<copy todir="${dist.dir}/linuxTool">
+			<fileset dir="src\linuxTool">
+				<include name="**"/>
+			</fileset>
+		</copy>
+	</target>
+	
     <!--
 
     There exist several targets which are by default empty and which can be 
