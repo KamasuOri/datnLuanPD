@@ -9,8 +9,11 @@ userAndSID=['']
 userList=['']
 outputDir=''
 inputPath=''
-
+commonExtension=".AIFF-.AU-.AVI-.BAT-.BMP-.CLASS-.JAVA-.CSV-.CVS-.DBF-.DIF-.DOC-.EPS-.EXE-.FM3-.GIF-.HQX-.HTM-.JP-.MAC-.MID-.MOV-.MTB-.PDF-.P65-.T65-.PNG-.PPT-.PSD-.PSP-.QXD-.RA-.RTF-.SIT-.TAR-.TIF-.TXT-.WAV-.WK3-.WKS-.WP5-.XLS-.ZIP"
 def getUserAndSID():
+	""" 
+	Lấy tên user và SID. Kết quả được lưu vào biến userAndSID và userList
+	"""
 	check =0
 	try:
 		a = open(outputDir+"tmpFolder/reg/config/SAMparse","r").read()
@@ -40,8 +43,9 @@ def getUserAndSID():
 	return 0
 
 def getRoughData():	
-
-	# get reg file and some thing we want to use
+	""" 
+	Lấy Dữ liệu thô gồm windows logs và registry. File được lưu vào thư mục "tmpFolder" được tạo bởi start.preEnv()
+	"""
 	try:
 		api.copyFile(inputPath+"Windows/System32/config",outputDir+"tmpFolder/reg")		#registry
 		api.copyFile(inputPath+"Windows/System32/winevt/Logs",outputDir+"tmpFolder/winLog")#winlog
@@ -62,6 +66,9 @@ def getRoughData():
 	return 0
 
 def getBrowserCache():
+	""" 
+	Lấy cache các trình duyệt phổ biến gồm: chrome, coccoc, IE, firefox, opera. File được lưu vào thư mục "tmpFolder/browserCache/" được tạo bởi start.preEnv()
+	"""
 	getUserAndSID()
 	for userName in userList:
 		cacheStore = outputDir+"tmpFolder/browserCache/"+userName
@@ -99,6 +106,9 @@ def getBrowserCache():
 		# ---------------------------------------------------------------------------------------
 		
 def getUserLoginHistory():
+	""" 
+	Lấy lịch sử đăng nhập của người dùng. File được lưu vào thư mục "tmpFolder/winLog/" được tạo bởi start.preEnv()
+	"""
 	getUserAndSID()
 	api.retCmd("rm "+outputDir+"tmpFolder/winLog/MicrosoftWindowsUserProfileService")
 	api.retCmd("rm "+outputDir+"tmpFolder/winLog/retUserLoginHistory")
@@ -160,6 +170,9 @@ def getUserLoginHistory():
 	return 0
 
 def getRDPHistory():
+	""" 
+	Lấy lịch sử truy cập bằng phương thức RDP. File được lưu vào thư mục "tmpFolder/winLog/" được tạo bởi start.preEnv()
+	"""
 	api.retCmd("rm "+outputDir+"tmpFolder/winLog/LocalSessionManagerOperational")
 	api.retCmd("rm "+outputDir+"tmpFolder/winLog/RDPHistory")
 	api.retCmd("rm "+outputDir+"tmpFolder/winLog/RemoteConnectionManagerOperational")
@@ -244,6 +257,9 @@ def getRDPHistory():
 	retFile.close()
 
 def getNetworkConfig():
+	""" 
+	Lấy cấu hình network. File được lưu vào thư mục "tmpFolder/network/" được tạo bởi start.preEnv()
+	"""
 	retFile = open(outputDir+"tmpFolder/network/status.txt","a")
 	if not os.path.exists(outputDir+"tmpFolder/reg/config/SYSTEM"):
 		retFile.write("Can't find SYSTEM file !")
@@ -293,6 +309,9 @@ def getNetworkConfig():
 		print "fail in getNetworkConfig"
 
 def copyChosenFile():
+	""" 
+	Copy các file được yêu cầu trong "FileNeedCopy.txt". File được lưu vào thư mục "tmpFolder/fileCopyOption/" được tạo bởi start.preEnv()
+	"""
 	f = open("FileNeedCopy.txt","r").read().split("\n")
 
 	count=0
@@ -303,11 +322,48 @@ def copyChosenFile():
 			api.copyFile(inputPath+file,path)
 			count +=1
 
-def getMRUCache():
-	api.copyFile(outputDir+"tmpFolder/reg/userReg",outputDir+"tmpFolder/MRUCache")
+def getFileHaveBeenOpen():
+	""" Lấy danh sách các file trong MRU cache. File được lưu vào thư mục "tmpFolder/FileHaveBeenOpen/" được tạo bởi start.preEnv()
+	"""
+	api.copyFile(outputDir+"tmpFolder/reg/userReg",outputDir+"tmpFolder/FileHaveBeenOpen")
+	listFolder = api.retCmd("ls "+outputDir+"tmpFolder/FileHaveBeenOpen/userReg").split("\n")
+	for userFolder in listFolder:
+		if len(userFolder) > 2:
+			listReg = api.retCmd("ls "+outputDir+"tmpFolder/FileHaveBeenOpen/userReg/"+userFolder).split("\n")
+			tmpPath = outputDir+"tmpFolder/FileHaveBeenOpen/userReg/"+userFolder+"/"
+
+			for regName in listReg:
+				if len(regName)>2 and "ntus" in regName.lower()and "txt" not in regName.lower():
+					cmd = "rip.pl -r "+tmpPath+regName+" -p userassist > "+tmpPath+regName.replace(".DAT","Full.txt").replace(".dat","Full.txt")
+					api.retCmd(cmd)
+					f =open(tmpPath+regName.replace(".DAT","Full.txt").replace(".dat","Full.txt"),"r").read().split("\n")
+					retFile = open(tmpPath+regName.replace(".DAT",".txt").replace(".dat",".txt"),"w")
+					tmpCE=commonExtension.split("-")
+					for line in f:
+						for cE in tmpCE:
+							if cE.lower() in line.lower():
+								retFile.write(line.strip()+"\n")
+							
+					retFile.close()
+
+
+			
 
 
 def main(inPath,retDir,ioctl):
+	"""
+	Hàm main điều phối luồng thực thi yêu cầu
+
+	Parameters
+	----------
+	inPath
+		Đường dẫn tới ổ đĩa chưa windows cần thu thập (bình thường là ổ C)
+	retDir
+		Đường dẫn tới thư mục "tmpFolder" được tạo bởi start.preEnv()
+	ioctl
+		Hàm sẽ được hàm main gọi tới
+
+	"""
 	global inputPath
 	global outputDir
 	outputDir = retDir
@@ -331,8 +387,8 @@ def main(inPath,retDir,ioctl):
 		getRDPHistory()
 	if "copyChosenFile" in ioctl:
 		copyChosenFile()
-	if "getMRUCache" in ioctl:
-		getMRUCache()
+	if "getFileHaveBeenOpen" in ioctl:
+		getFileHaveBeenOpen()
 
 
 # start("/mnt/cDrive","./")

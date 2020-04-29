@@ -49,7 +49,6 @@ public class BaseFunction {
 //        System.out.println(execCMD("pwd"));
 //        System.out.println("python linuxTool/start.py "+ioctf);
         String test =  execCMD("python linuxTool/start.py "+ ioctf);
-        
         return test;
     }
     

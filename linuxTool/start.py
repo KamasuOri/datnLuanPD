@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*- 
 import os
 import commands
 import  time
@@ -11,6 +11,8 @@ path=''
 
 
 def preEnv():
+	""" Tạo cây thư mục tạm để lưu kết quả đầu ra
+	"""
 	global outputDir
 
 	if os.path.exists(api.fillPath(outputDir+"tmpFolder")):
@@ -22,10 +24,13 @@ def preEnv():
 	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/other"))
 	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/network"))
 	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/fileCopyOption"))
-
+	api.retCmd("mkdir -p "+api.fillPath(outputDir+"tmpFolder/FileHaveBeenOpen"))
 	return 0
 
 def main():
+	"""
+	Đọc file control.txt (được tạo ra trong code java) để lấy đường dẫn của ổ đĩa cần lấy chứng cứ và nơi lưu chứng cứ khi thu thập xong
+	"""
 	global path
 	global outputDir
 	f = open("control.txt","r").read().split("\n")
